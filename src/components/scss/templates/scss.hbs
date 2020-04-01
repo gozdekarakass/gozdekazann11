@@ -1,0 +1,58 @@
+@font-face {
+	font-family: "{{fontName}}";
+		src: url("/resources/fonts/myfonticons.eot?#iefix") format("embedded-opentype"),
+		url("/resources/fonts/myfonticons.woff") format("woff"),
+		url("/resources/fonts/myfonticons.woff2") format("woff2"),
+		url("/resources/fonts/myfonticons.ttf") format("truetype"),
+		url("/resources/fonts/myfonticons.svg#myfonticons") format("svg");
+}
+
+@if not variable-exists('webfont-icons') {
+	$webfont-icons: () !global;
+}
+
+$webfont-icons: map-merge($webfont-icons, (
+	{{#each codepoints}}
+		'{{@key}}': ('{{../fontName}}' '\\{{this}}'),
+	{{/each}}
+));
+
+@mixin myfonticon (){
+	font-family:"{{fontName}}";
+	font-style: normal;
+	font-weight: normal !important;
+	vertical-align: middle;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	font-variant: normal;
+	text-decoration: none;
+	text-transform: none;
+	display: inline-block;
+}
+
+@mixin webfont-icon($name) {
+	$icon: map-get($webfont-icons, $name);
+	&:before {
+		content: nth($icon, 2);
+		@include myfonticon();
+	}
+}
+
+@mixin webfont-icon-after($name) {
+	$icon: map-get($webfont-icons, $name);
+	&:after {
+		content: nth($icon, 2);
+		@include myfonticon();
+	}
+}
+	.myfonticon{
+		@include myfonticon();
+	}
+
+	{{#each codepoints}}
+		.myfonticon-{{@key}}{
+			&:before{
+				content: '\\{{this}}';
+			}
+		}
+	{{/each}}

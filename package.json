@@ -1,0 +1,49 @@
+{
+  "name": "react-ssr",
+  "version": "0.1.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start-dev": "NODE_ENV=development webpack -w & NODE_ENV=development nodemon server.js",
+    "start-prod": "NODE_ENV=production webpack & NODE_ENV=production nodemon server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.4",
+    "express": "^4.15.3",
+    "jest": "^24.9.0",
+    "jest-enzyme": "^7.1.2",
+    "mini-css-extract-plugin": "^0.4.5",
+    "node-sass": "^4.10.0",
+    "node-time-ago": "^1.0.0",
+    "react": "^16.8.5",
+    "react-dom": "^16.8.5",
+    "react-router-dom": "^5.0.0",
+    "react-testing-library": "^7.0.1",
+    "sass-loader": "^7.1.0",
+    "serialize-javascript": "^1.4.0",
+    "source-map-support": "^0.4.15",
+    "style-loader": "^0.23.1",
+    "test": "^0.6.0",
+    "webfonts-generator": "^0.4.0",
+    "webfonts-loader": "^4.2.1"
+  },
+  "devDependencies": {
+    "autoprefixer": "^7.1.2",
+    "babel-core": "^6.25.0",
+    "babel-loader": "^7.1.1",
+    "babel-preset-react-app": "^3.0.1",
+    "css-loader": "^0.28.4",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.15.1",
+    "extract-text-webpack-plugin": "^4.0.0-beta.0",
+    "file-loader": "^1.1.11",
+    "nodemon": "^1.11.0",
+    "only-web-loader": "^0.1.0",
+    "postcss-loader": "^2.0.6",
+    "webpack": "^4.11.1",
+    "webpack-cli": "^3.1.2"
+  }
+}

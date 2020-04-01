@@ -1,0 +1,135 @@
+* {
+    @include box-sizing(border-box);
+  }
+  *:before,
+  *:after {
+    @include box-sizing(border-box);
+  }
+  
+  html {
+    font-size: 14px;
+  }
+  
+  body {
+    font-family: 'Montserrat','Helvetica Neue','Helvetica','Arial';
+    font-size: 14px;
+    color: black;
+    padding: 0;
+    margin: 0;
+    color: black;
+  }
+  
+
+  .wrapper{
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 15px;
+  }
+
+  // Reset fonts for relevant elements
+  input{
+    outline: 0;
+    border: 1px solid #d4d5d7;
+    color: #4A4A4A;
+    border-radius: 4px;
+    font-size: 14px;
+    padding: 8px 6px;
+    font-weight: 500;
+    vertical-align: middle;
+  }
+
+  button,
+  select,
+  textarea {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+  }
+  
+  
+  // Links
+  
+  a {
+    color: #056BFD;
+    text-decoration: none;
+  
+    &:hover,
+    &:focus {
+      color: #056BFD;
+    }
+  
+    &.link-bg{
+        font-size: 16px;
+    }
+
+    &.link-md{
+        font-size: 14px;
+    }
+
+    &.link-sm{
+        font-size: 12px;
+    }
+    
+  }
+
+  figure {
+    margin: 0;
+  }
+
+  img {
+    vertical-align: middle;
+  }
+
+  [role="button"] {
+    cursor: pointer;
+  }
+  
+  ul
+  {
+    list-style: none;
+    padding:0;
+    margin: 0;
+  }
+
+
+  h1{
+    font-size:75px;
+    line-height: 65px;
+    margin: 0;
+  }
+
+  h2{
+    font-size: 36px;
+    line-height: 44px;
+    margin: 0;
+  }
+
+
+
+  h3{
+    font-size:32px;
+    line-height: 40px;
+    margin: 0;
+  }
+
+
+
+  h4{
+    font-size:28px;
+    line-height: 34px;
+    margin: 0;
+  }
+
+
+  h5{
+    font-size:20px;
+    line-height: 26px;
+    margin: 0;
+  }
+
+  h6{
+    font-size:16px;
+    line-height: 20px;
+    margin: 0;
+  }
+
