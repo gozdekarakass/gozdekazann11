@@ -46,6 +46,10 @@ build/Release
 node_modules/
 jspm_packages/
 .idea/
+public/resources/js/bundle.js
+public/resources/js/bundle.js.map
+server.js
+server.js.map
 
 # TypeScript v1 declaration files
 typings/
@@ -92,9 +96,3 @@ typings/
 
 # DynamoDB Local files
 .dynamodb/
-
-# End of https://www.gitignore.io/api/node
-public/resources/js/bundle.js
-public/resources/js/bundle.js.map
-server.js
-server.js.map

@@ -17,7 +17,8 @@ class Home extends Component{
             totalPrice : 0,
             baremValue: '',
             baremPriceValue: '',
-            selectedBarem : ''
+            selectedBarem : '',
+            buttonStatus : false
         }
         this.changeFilter = this.changeFilter.bind(this);
         this.changeSize = this.changeSize.bind(this);
@@ -95,13 +96,22 @@ class Home extends Component{
         const dataprice = e.target.getAttribute("data-price");
 
         //e.target.classList.add('baremChange');
-
         console.log('dataprice :' + dataprice);
 
-        this.setState({
-            baremPriceValue: dataprice,
-            //selectedBarem : !this.state.selectedBarem
+
+        this.setState((prevState) => {
+            return {
+                baremPriceValue: dataprice,
+                selectedBarem : !prevState.selectedBarem
+            }
         });
+
+
+        var a = document.getElementsByClassName('barem');
+        for (let i = 0; i < a.length; i++) {
+            a[i].classList.remove('baremChange')
+        }
+        e.target.classList.add('baremChange');
     }
 
     render(){
@@ -172,7 +182,7 @@ class Home extends Component{
                                 {
                                     data.baremList.map((barem) => {
                                         return(
-                                            <div className={ this.state.selectedBarem ? "barem baremChange" : "barem"} data-price={barem.price}
+                                            <div className="barem" data-price={barem.price}
                                                  onClick={this.baremPrice}>
                                                 {barem.minimumQuantity} - {barem.maximumQuantity}
                                                 <br />
@@ -187,6 +197,9 @@ class Home extends Component{
                         <div className="piece">Adet <input value={this.state.baremValue} onChange={ this.baremChange} placeholder="100"/> Adet</div>
                         <div className="totalPrice">
                             <h5>TOPLAM : { this.state.totalPrice * this.state.baremPriceValue } TL</h5>
+                        </div>
+                        <div className="basketDiv">
+                            <input type="button" className="basketBtn" value="SEPETE EKLE" disabled={ this.state.buttonStatus ? '' : 'disabled'}/>
                         </div>
 
                     </div>
