@@ -23,7 +23,7 @@
     "react-router-dom": "^5.0.0",
     "react-testing-library": "^7.0.1",
     "sass-loader": "^7.1.0",
-    "serialize-javascript": "^1.4.0",
+    "serialize-javascript": "^3.0.0",
     "source-map-support": "^0.4.15",
     "style-loader": "^0.23.1",
     "test": "^0.6.0",
