@@ -3,6 +3,8 @@ import './home.scss';
 import {Header} from '../header/header';
 import productData from '../../../data/productdata.json';
 
+import BaremPrice from './baremPrice';
+
 class Home extends Component{
     
     constructor(props) {
@@ -18,16 +20,21 @@ class Home extends Component{
             baremValue: '',
             baremPriceValue: '',
             selectedBarem : '',
-            buttonStatus : false
+            buttonStatus : false,
+            colorFilter : '',
+            sizeFilter : '',
+            filtered : null
         }
         this.changeFilter = this.changeFilter.bind(this);
         this.changeSize = this.changeSize.bind(this);
         this.baremChange = this.baremChange.bind(this);
         this.baremPrice = this.baremPrice.bind(this);
+        this.filterAll = this.filterAll.bind(this);
     }
 
     changeFilter(e){
-
+        this.state.filtered = null;
+//color
         const sizeName = e.target.getAttribute("data-name");
         const inputs = document.querySelectorAll(".sizeInput");
 
@@ -39,51 +46,91 @@ class Home extends Component{
         for (var i = 0; i < inputs.length; i++) {
             inputs[i].setAttribute("disabled",true);
         }
+
         const newProductArry = productData.productVariants.filter((item) => {
             return item.attributes[1].value === sizeName
         });
 
+        var first = true;
         newProductArry.map((item) => {
             for (var i = 0; i < inputs.length; i++) {
                 if(item.attributes[0].value === inputs[i].value) {
+                    if(first)
+                        inputs[i].checked = true;
+
+                    first = false;
                     inputs[i].removeAttribute("disabled");
+                    inputs[i].setAttribute("data-id", item.id);
                 }
             }
         });
-       // console.log(this.state.imagesList);
+
+        this.state.colorFilter = sizeName;
+        this.state.sizeFilter = null;
+        this.state.filtered = newProductArry;
+        this.filterAll();
     }
 
     changeSize(e){
+        this.state.filtered = null;
         const size = e.target.getAttribute("data-name");
 
-        const newSizeArry = productData.productVariants.filter((item) => {
-            console.log('newProductArry' + item.attributes[0].value);
+        if(!e.target.checked)
+            this.state.sizeFilter = size;
+        else
+            this.state.sizeFilter = null;
 
-            return item.attributes[0].value === size
-        });
+        this.filterAll();
+    }
+
+
+    filterAll(e){
+        this.state.imagesList = [];
+        if(this.state.filtered == null)
+        {
+            this.state.filtered = productData.productVariants.filter((item) => {
+                return item.attributes[1].value === this.state.colorFilter
+            });
+        }
+
+        var newSizeArry = [];
+        if(this.state.sizeFilter==null)
+        {
+            newSizeArry = [  this.state.filtered[0] ];
+        }
+        else{
+            // console.log(this.state.imagesList);
+            newSizeArry = this.state.filtered.filter((item) => {
+                //console.log('newProductArry' + item.attributes[0].value);
+
+                return item.attributes[0].value === this.state.sizeFilter
+            });
+        }
+
 
         newSizeArry.map((item) => {
             console.log('--' + item.images);
 
             this.state.imagesList.push(item.images);
-
-            if(this.state.imagesList != null){
-                this.state.imagesList.map((itemImg) => {
-                    Array.from(itemImg).map((sizeObj, index) => {
-                        document.getElementsByClassName("sImages")[index].src = "";
-                        document.getElementsByClassName("sImages")[index].src = sizeObj;
-                        //console.log('1' + sizeObj);
-
-                        document.getElementsByClassName("bigImages")[0].src = "";
-                        document.getElementsByClassName("bigImages")[0].src = sizeObj;
-
-                    });
-
-                })
-            }
         });
 
+        if(this.state.imagesList != null){
+            this.state.imagesList.map((itemImg) => {
+                Array.from(itemImg).map((sizeObj, index) => {
+                    document.getElementsByClassName("sImages")[index].src = "";
+                    document.getElementsByClassName("sImages")[index].src = sizeObj;
+                    //console.log('1' + sizeObj);
+
+                    document.getElementsByClassName("bigImages")[0].src = "";
+                    document.getElementsByClassName("bigImages")[0].src = sizeObj;
+
+                });
+
+            })
+        }
+
     }
+
 
     baremChange(e){
         this.setState({
@@ -94,11 +141,6 @@ class Home extends Component{
 
     baremPrice(e){
         const dataprice = e.target.getAttribute("data-price");
-
-        //e.target.classList.add('baremChange');
-        console.log('dataprice :' + dataprice);
-
-
         this.setState((prevState) => {
             return {
                 baremPriceValue: dataprice,
@@ -106,12 +148,36 @@ class Home extends Component{
             }
         });
 
-
-        var a = document.getElementsByClassName('barem');
+        let a = document.getElementsByClassName('barem');
         for (let i = 0; i < a.length; i++) {
             a[i].classList.remove('baremChange')
         }
         e.target.classList.add('baremChange');
+    }
+
+    basketBtnVisible(){
+        let colorInput = document.getElementsByClassName("colorInput")[1].checked;
+        let sizeInput = document.getElementsByClassName("sizeInput")[1].checked;
+
+        if(colorInput && sizeInput && (this.state.baremValue != 0) && (this.state.selectedBarem != null) ){
+            document.getElementById('basketBtn').disabled = false;
+            this.setState({buttonStatus : true})
+        }
+        else {
+            document.getElementById('basketBtn').disabled = true;
+            this.setState({ buttonStatus : false });
+        }
+
+        // seçili olan attribute’un id sini ve seçili baremi console’a basabilirsin
+        console.log('secili id' +  document.querySelector('.sizeInput:checked').getAttribute('data-id'));
+        console.log('secili barem' +  document.getElementsByClassName('baremChange')[0].getAttribute('data-price'));
+
+    }
+
+    componentDidUpdate() {
+        console.log('componentDidUpdate');
+        this.basketBtnVisible = this.basketBtnVisible.bind(this);
+        return this.state.buttonStatus;
     }
 
     render(){
@@ -199,7 +265,7 @@ class Home extends Component{
                             <h5>TOPLAM : { this.state.totalPrice * this.state.baremPriceValue } TL</h5>
                         </div>
                         <div className="basketDiv">
-                            <input type="button" className="basketBtn" value="SEPETE EKLE" disabled={ this.state.buttonStatus ? '' : 'disabled'}/>
+                            <input id="basketBtn" type="button" className="basketBtn" value="SEPETE EKLE" disabled={ this.state.buttonStatus ? '' : 'disabled'}/>
                         </div>
 
                     </div>
