@@ -23,7 +23,11 @@ class Home extends Component{
             buttonStatus : false,
             colorFilter : '',
             sizeFilter : '',
-            filtered : null
+            filtered : null,
+            a : false,
+            b : false,
+            c : false,
+            d : false,
         }
         this.changeFilterColor = this.changeFilterColor.bind(this);
         this.changeSize = this.changeSize.bind(this);
@@ -31,6 +35,8 @@ class Home extends Component{
         this.baremPrice = this.baremPrice.bind(this);
         this.filterAll = this.filterAll.bind(this);
         this.changeImage = this.changeImage.bind(this);
+        this.basketBtnVisible = this.basketBtnVisible.bind(this);
+        this.addBasket = this.addBasket.bind(this);
     }
 
     changeFilterColor(e){
@@ -64,16 +70,21 @@ class Home extends Component{
         this.state.sizeFilter = null;
         this.state.filtered = newProductArry;
         this.filterAll();
+        this.basketBtnVisible(this.state.a = true);
     }
 
     changeSize(e){
         this.state.filtered = null;
         const size = e.target.getAttribute("data-name");
 
-        if(!e.target.checked)
+        if(!e.target.checked){
+            this.basketBtnVisible(this.state.b = true);
             this.state.sizeFilter = size;
-        else
+        }
+        else{
+            this.basketBtnVisible(this.state.b = false);
             this.state.sizeFilter = null;
+        }
 
         this.filterAll();
     }
@@ -95,10 +106,7 @@ class Home extends Component{
             });
 
         newSizeArry.map((item) => {
-            this.state.imagesList.push( {
-                id : item.id,
-                images : item.images
-            });
+            this.state.imagesList.push( { images : item.images });
         });
 
         if(this.state.imagesList != null)
@@ -113,6 +121,7 @@ class Home extends Component{
     }
 
     baremChange(e){
+
         this.setState({
             baremValue: e.target.value,
             totalPrice: this.state.baremValue,
@@ -121,13 +130,16 @@ class Home extends Component{
         var barem = [];
         barem.push(document.getElementsByClassName("barem"));
         barem.forEach(function(item, index){
-            var minimumQuantity = barem[index][index].getAttribute("data-minimumQuantity");
-            var maximumQuantity = barem[index][index].getAttribute("data-maximumQuantity");
+            var minimumQuantity = barem[index][index].getAttribute("data-minimumquantity");
+            var maximumQuantity = barem[index][index].getAttribute("data-maximumquantity");
             if( e.target.value >= minimumQuantity && e.target.value <= maximumQuantity )
                 barem[index][index].classList.add('baremChange');
             else
                 barem[index][index].classList.remove('baremChange');
         });
+
+        this.basketBtnVisible(this.state.d = true);
+
     }
 
     baremPrice(e){
@@ -145,6 +157,9 @@ class Home extends Component{
             a[i].classList.remove('baremChange')
         }
         e.target.classList.add('baremChange');
+
+        this.basketBtnVisible(this.state.c = true);
+
     }
 
     changeImage (e){
@@ -152,29 +167,19 @@ class Home extends Component{
         bigImages.src= e.target.src
     }
 
-    basketBtnVisible(){
-        let colorInput = document.getElementsByClassName("colorInput")[1].checked;
-        let sizeInput = document.getElementsByClassName("sizeInput")[1].checked;
-
-        if(colorInput && sizeInput && (this.state.baremValue != 0) && (this.state.selectedBarem != null) ){
-            document.getElementById('basketBtn').disabled = false;
-            this.setState({buttonStatus : true})
-        }
-        else {
-            document.getElementById('basketBtn').disabled = true;
-            this.setState({ buttonStatus : false });
-        }
-
-        // seçili olan attribute’un id sini ve seçili baremi console’a basabilirsin
-        console.log('secili id' +  document.querySelector('.sizeInput:checked').getAttribute('data-id'));
-        console.log('secili barem' +  document.getElementsByClassName('baremChange')[0].getAttribute('data-price'));
-
+    basketBtnVisible() {
+        if (this.state.a && this.state.b && this.state.c && this.state.d)
+            this.state.buttonStatus = true;
+        else
+            this.state.buttonStatus = false;
     }
 
-    componentDidUpdate() {
-        console.log('componentDidUpdate');
-        this.basketBtnVisible = this.basketBtnVisible.bind(this);
-        return this.state.buttonStatus;
+    addBasket(){
+        console.log("asas")
+        // seçili olan attribute’un id sini ve seçili baremi console’a basabilirsin
+        console.log('secili ID : ' + document.querySelector('.sizeInput:checked').getAttribute('data-id'));
+        console.log('secili barem : ' + document.getElementsByClassName('baremChange')[0].getAttribute('data-price'));
+
     }
 
     render(){
@@ -247,8 +252,8 @@ class Home extends Component{
                                         return(
                                             <div className="barem"
                                                  data-price={barem.price}
-                                                 data-minimumQuantity={barem.minimumQuantity}
-                                                 data-maximumQuantity={barem.maximumQuantity}
+                                                 data-minimumquantity={barem.minimumQuantity}
+                                                 data-maximumquantity={barem.maximumQuantity}
                                                  onClick={this.baremPrice}>
                                                 {barem.minimumQuantity} - {barem.maximumQuantity}
                                                 <br />
@@ -265,7 +270,12 @@ class Home extends Component{
                             <h5>TOPLAM : { this.state.totalPrice * this.state.baremPriceValue } TL</h5>
                         </div>
                         <div className="basketDiv">
-                            <input id="basketBtn" type="button" className="basketBtn" value="SEPETE EKLE" disabled={ this.state.buttonStatus ? '' : 'disabled'}/>
+                            <input onClick={this.addBasket}
+                                   id="basketBtn"
+                                   type="button"
+                                   className="basketBtn"
+                                   value="SEPETE EKLE"
+                                   disabled={ this.state.buttonStatus ? '' : 'disabled'}/>
                         </div>
 
                     </div>
