@@ -3,7 +3,7 @@ import './home.scss';
 import {Header} from '../header/header';
 import productData from '../../../data/productdata.json';
 
-import ChangeFilterColor from './changeFilterColor';
+import BaremPrice from './baremPrice';
 
 class Home extends Component{
 
@@ -24,11 +24,12 @@ class Home extends Component{
             colorFilter : '',
             sizeFilter : '',
             filtered : null,
-            //a : this.props.state.a,
+            a : false,
             b : false,
             c : false,
             d : false,
         }
+        this.changeFilterColor = this.changeFilterColor.bind(this);
         this.changeSize = this.changeSize.bind(this);
         this.baremChange = this.baremChange.bind(this);
         this.baremPrice = this.baremPrice.bind(this);
@@ -36,6 +37,40 @@ class Home extends Component{
         this.changeImage = this.changeImage.bind(this);
         this.basketBtnVisible = this.basketBtnVisible.bind(this);
         this.addBasket = this.addBasket.bind(this);
+    }
+
+    changeFilterColor(e){
+        this.state.filtered = null;
+        const sizeName = e.target.getAttribute("data-name");
+        const inputs = document.querySelectorAll(".sizeInput");
+
+        //color her change oldugunda size checked sifirlanmali
+        for (var i = 0; i < inputs.length; i++) { inputs[i].checked = false; }
+
+        for (var i = 0; i < inputs.length; i++) { inputs[i].setAttribute("disabled",true); }
+
+        const newProductArry = productData.productVariants.filter((item) => {
+            return item.attributes[1].value === sizeName
+        });
+
+        //var first = true;
+        newProductArry.map((item) => {
+            for (var i = 0; i < inputs.length; i++) {
+                if(item.attributes[0].value === inputs[i].value)
+                //renk secildiginde beden icin ilkini checked
+                    //if(first)
+                        //inputs[i].checked = true;
+                //first = false;
+                inputs[i].removeAttribute("disabled");
+                inputs[i].setAttribute("data-id", item.id);
+            }
+        });
+
+        this.state.colorFilter = sizeName;
+        this.state.sizeFilter = null;
+        this.state.filtered = newProductArry;
+        this.filterAll();
+        this.basketBtnVisible(this.state.a = true);
     }
 
     changeSize(e){
@@ -132,8 +167,8 @@ class Home extends Component{
         bigImages.src= e.target.src
     }
 
-    basketBtnVisible(a, b, c, d) {
-        if (a && this.state.b && this.state.c && this.state.d)
+    basketBtnVisible() {
+        if (this.state.a && this.state.b && this.state.c && this.state.d)
             this.state.buttonStatus = true;
         else
             this.state.buttonStatus = false;
@@ -172,11 +207,42 @@ class Home extends Component{
                             <span className="productTitle">{data.productTitle}</span>
                         </div>
                         <hr/>
-                        <ChangeFilterColor
-                            filterAll={this.filterAll}
-                            basketBtnVisible={this.basketBtnVisible}
-                            changeSize={this.changeSize}
-                            />
+                        <div className="attributes">
+                            {
+                                data.selectableAttributes.map((item,i) => (
+                                    <div className="items" key={i}>
+                                        <strong>
+                                            {item.name}
+                                        </strong>
+                                        <ul>
+                                            {
+                                                item.values.map((itemRadio,i) => (
+                                                    <div className="form-group">
+                                                        <li key={i}>
+                                                            <input className={item.name === "Renk" ? "colorInput" : "sizeInput"}
+                                                                   name={item.name} value={itemRadio}
+                                                                   disabled={item.name === "Beden" ? true : false}
+                                                                   id={itemRadio+i}
+                                                                   type="radio"
+                                                            />
+                                                            {item.name == "Renk" ?
+                                                                <label for="html" className="color" data-name={itemRadio}  onClick={ this.changeFilterColor } htmlFor={itemRadio+i}>
+                                                                    {itemRadio}
+                                                                </label>
+                                                                :
+                                                                <label for="html" className="size" onClick={ this.changeSize} data-name={itemRadio}  htmlFor={itemRadio+i}>
+                                                                    {itemRadio}
+                                                                </label>
+                                                            }
+                                                        </li>
+                                                    </div>
+                                                ))
+                                            }
+                                        </ul>
+                                    </div>
+                                ))
+                            }
+                        </div>
                         <div className="baremList">
                             <hr/>
                             <div className="baremDiv">
