@@ -175,10 +175,10 @@ class Home extends Component{
     }
 
     addBasket(){
-        console.log("asas")
         // seçili olan attribute’un id sini ve seçili baremi console’a basabilirsin
         console.log('secili ID : ' + document.querySelector('.sizeInput:checked').getAttribute('data-id'));
         console.log('secili barem : ' + document.getElementsByClassName('baremChange')[0].getAttribute('data-price'));
+        console.log('toplam fiyat : ' + this.state.totalPrice * this.state.baremPriceValue );
 
     }
 
@@ -265,7 +265,7 @@ class Home extends Component{
                             </div>
                         </div>
                         <div className="clearfix"></div>
-                        <div className="piece">Adet <input className="myText" placeholder="100" value={this.state.baremValue} onChange={ this.baremChange}/> Adet</div>
+                        <div className="piece">Adet <input type="number" className="myText" placeholder="100" value={this.state.baremValue} onChange={ this.baremChange}/> Adet</div>
                         <div className="totalPrice">
                             <h5>TOPLAM : { this.state.totalPrice * this.state.baremPriceValue } TL</h5>
                         </div>
