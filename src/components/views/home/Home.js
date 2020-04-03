@@ -3,8 +3,6 @@ import './home.scss';
 import {Header} from '../header/header';
 import productData from '../../../data/productdata.json';
 
-import BaremPrice from './baremPrice';
-
 class Home extends Component{
 
     constructor(props) {
