@@ -6,7 +6,7 @@ import productData from '../../../data/productdata.json';
 import BaremPrice from './baremPrice';
 
 class Home extends Component{
-    
+
     constructor(props) {
         super(props);
         this.state = {
@@ -40,22 +40,22 @@ class Home extends Component{
         //color her change oldugunda size checked sifirlanmali
         for (var i = 0; i < inputs.length; i++) { inputs[i].checked = false; }
 
-        for (var a = 0; a < inputs.length; a++) { inputs[a].setAttribute("disabled",true); }
+        for (var i = 0; i < inputs.length; i++) { inputs[i].setAttribute("disabled",true); }
 
         const newProductArry = productData.productVariants.filter((item) => {
             return item.attributes[1].value === sizeName
         });
 
-        var first = true;
+        //var first = true;
         newProductArry.map((item) => {
             for (var i = 0; i < inputs.length; i++) {
                 if(item.attributes[0].value === inputs[i].value)
-                    //renk secildiginde beden icin ilkini checked
-                    if(first)
-                        inputs[i].checked = true;
-                    first = false;
-                    inputs[i].removeAttribute("disabled");
-                    inputs[i].setAttribute("data-id", item.id);
+                //renk secildiginde beden icin ilkini checked
+                    //if(first)
+                        //inputs[i].checked = true;
+                //first = false;
+                inputs[i].removeAttribute("disabled");
+                inputs[i].setAttribute("data-id", item.id);
             }
         });
 
@@ -114,10 +114,28 @@ class Home extends Component{
             baremValue: e.target.value,
             totalPrice: this.state.baremValue,
         });
+
+        var barem = [];
+        var val = document.getElementsByClassName("myText")[0].value;
+        barem.push(document.getElementsByClassName("barem"));
+
+        barem.forEach(function(item, index){
+
+            var minimumQuantity = barem[index][index].getAttribute("data-minimumQuantity");
+            var maximumQuantity = barem[index][index].getAttribute("data-maximumQuantity");
+
+            if( val >= minimumQuantity && val <= maximumQuantity )
+                document.getElementsByClassName("barem")[index].classList.add('baremChange');
+            else
+                document.getElementsByClassName("barem")[index].classList.remove('baremChange');
+
+        });
     }
+
 
     baremPrice(e){
         const dataprice = e.target.getAttribute("data-price");
+
         this.setState((prevState) => {
             return {
                 baremPriceValue: dataprice,
@@ -161,20 +179,20 @@ class Home extends Component{
         const { data } = this.state;
         return(
             <div>
-               <Header/>
+                <Header/>
                 <div className="product">
                     <div className="product-image">
                         <img className="bigImages" src={data.productVariants[0].images.slice(0,1)}/>
                         <div className="images">
-                        {
-                            data.productVariants.map((attr) => {
-                                return (
-                                    <div className="smallImages">
-                                        <img className="sImages" src={attr.images[0]}/>
-                                    </div>
-                                );
-                            })
-                        }
+                            {
+                                data.productVariants.map((attr) => {
+                                    return (
+                                        <div className="smallImages">
+                                            <img className="sImages" src={attr.images[0]}/>
+                                        </div>
+                                    );
+                                })
+                            }
                         </div>
                     </div>
                     <div className="product-detail-content">
@@ -193,24 +211,24 @@ class Home extends Component{
                                             {
                                                 item.values.map((itemRadio,i) => (
                                                     <div className="form-group">
-                                                    <li key={i}>
-                                                        <input className={item.name === "Renk" ? "colorInput" : "sizeInput"}
-                                                               name={item.name} value={itemRadio}
-                                                               disabled={item.name === "Beden" ? true : false}
-                                                               id={itemRadio+i}
-                                                               type="radio"
-                                                        />
-                                                        {item.name == "Renk" ?
-                                                            <label for="html" className="color" data-name={itemRadio}  onClick={ this.changeFilterColor } htmlFor={itemRadio+i}>
-                                                                {itemRadio}
-                                                            </label>
-                                                            :
-                                                            <label for="html" className="size" onClick={ this.changeSize} data-name={itemRadio}  htmlFor={itemRadio+i}>
-                                                                {itemRadio}
-                                                            </label>
-                                                        }
-                                                    </li>
-                                                </div>
+                                                        <li key={i}>
+                                                            <input className={item.name === "Renk" ? "colorInput" : "sizeInput"}
+                                                                   name={item.name} value={itemRadio}
+                                                                   disabled={item.name === "Beden" ? true : false}
+                                                                   id={itemRadio+i}
+                                                                   type="radio"
+                                                            />
+                                                            {item.name == "Renk" ?
+                                                                <label for="html" className="color" data-name={itemRadio}  onClick={ this.changeFilterColor } htmlFor={itemRadio+i}>
+                                                                    {itemRadio}
+                                                                </label>
+                                                                :
+                                                                <label for="html" className="size" onClick={ this.changeSize} data-name={itemRadio}  htmlFor={itemRadio+i}>
+                                                                    {itemRadio}
+                                                                </label>
+                                                            }
+                                                        </li>
+                                                    </div>
                                                 ))
                                             }
                                         </ul>
@@ -225,7 +243,10 @@ class Home extends Component{
                                 {
                                     data.baremList.map((barem) => {
                                         return(
-                                            <div className="barem" data-price={barem.price}
+                                            <div className="barem"
+                                                 data-price={barem.price}
+                                                 data-minimumQuantity={barem.minimumQuantity}
+                                                 data-maximumQuantity={barem.maximumQuantity}
                                                  onClick={this.baremPrice}>
                                                 {barem.minimumQuantity} - {barem.maximumQuantity}
                                                 <br />
@@ -237,7 +258,7 @@ class Home extends Component{
                             </div>
                         </div>
                         <div className="clearfix"></div>
-                        <div className="piece">Adet <input value={this.state.baremValue} onChange={ this.baremChange} placeholder="100"/> Adet</div>
+                        <div className="piece">Adet <input className="myText" value={this.state.baremValue} onChange={ this.baremChange} placeholder="100"/> Adet</div>
                         <div className="totalPrice">
                             <h5>TOPLAM : { this.state.totalPrice * this.state.baremPriceValue } TL</h5>
                         </div>
@@ -247,7 +268,7 @@ class Home extends Component{
 
                     </div>
                 </div>
-             </div>
+            </div>
         );
     }
 }
