@@ -130,6 +130,7 @@ class Home extends Component{
         barem.forEach(function(item, index){
             var minimumQuantity = barem[index][index].getAttribute("data-minimumquantity");
             var maximumQuantity = barem[index][index].getAttribute("data-maximumquantity");
+
             if( e.target.value >= minimumQuantity && e.target.value <= maximumQuantity )
                 barem[index][index].classList.add('baremChange');
             else
@@ -262,8 +263,15 @@ class Home extends Component{
                                 }
                             </div>
                         </div>
+
                         <div className="clearfix"></div>
-                        <div className="piece">Adet <input type="number" className="myText" placeholder="100" value={this.state.baremValue} onChange={ this.baremChange}/> Adet</div>
+                        <div className="piece">
+                            Adet
+                            <input type="number"
+                                   className="myText"
+                                   placeholder="100"
+                                   value={this.state.baremValue}
+                                   onChange={ this.baremChange}/> Adet</div>
                         <div className="totalPrice">
                             <h5>TOPLAM : { this.state.totalPrice * this.state.baremPriceValue } TL</h5>
                         </div>
