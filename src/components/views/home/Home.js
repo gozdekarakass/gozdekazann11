@@ -101,11 +101,8 @@ class Home extends Component{
             });
         });
 
-
         if(this.state.imagesList != null)
-
             this.state.imagesList.map((itemImg) => {
-
                 Array.from(itemImg.images).map((sizeObj, index) => {
                     document.getElementsByClassName("sImages")[index].src = "";
                     document.getElementsByClassName("sImages")[index].src = sizeObj;
@@ -115,37 +112,24 @@ class Home extends Component{
             })
     }
 
-
     baremChange(e){
         this.setState({
             baremValue: e.target.value,
             totalPrice: this.state.baremValue,
         });
 
-        console.log( e.target.value);
-
         var barem = [];
-        //var val = document.getElementsByClassName("myText")[0].value;
         barem.push(document.getElementsByClassName("barem"));
-
         barem.forEach(function(item, index){
-
             var minimumQuantity = barem[index][index].getAttribute("data-minimumQuantity");
             var maximumQuantity = barem[index][index].getAttribute("data-maximumQuantity");
-
             if( e.target.value >= minimumQuantity && e.target.value <= maximumQuantity )
                 barem[index][index].classList.add('baremChange');
             else
                 barem[index][index].classList.remove('baremChange');
-
         });
     }
 
-    changeImage (e){
-        let bigImages = document.getElementById("bigImages");
-        bigImages.src= e.target.src
-    }
-    
     baremPrice(e){
         const dataprice = e.target.getAttribute("data-price");
 
@@ -161,6 +145,11 @@ class Home extends Component{
             a[i].classList.remove('baremChange')
         }
         e.target.classList.add('baremChange');
+    }
+
+    changeImage (e){
+        let bigImages = document.getElementById("bigImages");
+        bigImages.src= e.target.src
     }
 
     basketBtnVisible(){
@@ -271,7 +260,7 @@ class Home extends Component{
                             </div>
                         </div>
                         <div className="clearfix"></div>
-                        <div className="piece">Adet <input className="myText" value={this.state.baremValue} onChange={ this.baremChange} placeholder="100"/> Adet</div>
+                        <div className="piece">Adet <input className="myText" placeholder="100" value={this.state.baremValue} onChange={ this.baremChange}/> Adet</div>
                         <div className="totalPrice">
                             <h5>TOPLAM : { this.state.totalPrice * this.state.baremPriceValue } TL</h5>
                         </div>
