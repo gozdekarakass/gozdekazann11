@@ -30,6 +30,7 @@ class Home extends Component{
         this.baremChange = this.baremChange.bind(this);
         this.baremPrice = this.baremPrice.bind(this);
         this.filterAll = this.filterAll.bind(this);
+        this.changeImage = this.changeImage.bind(this);
     }
 
     changeFilterColor(e){
@@ -94,12 +95,18 @@ class Home extends Component{
             });
 
         newSizeArry.map((item) => {
-            this.state.imagesList.push(item.images);
+            this.state.imagesList.push( {
+                id : item.id,
+                images : item.images
+            });
         });
 
+
         if(this.state.imagesList != null)
+
             this.state.imagesList.map((itemImg) => {
-                Array.from(itemImg).map((sizeObj, index) => {
+
+                Array.from(itemImg.images).map((sizeObj, index) => {
                     document.getElementsByClassName("sImages")[index].src = "";
                     document.getElementsByClassName("sImages")[index].src = sizeObj;
                     document.getElementsByClassName("bigImages")[0].src = "";
@@ -115,8 +122,10 @@ class Home extends Component{
             totalPrice: this.state.baremValue,
         });
 
+        console.log( e.target.value);
+
         var barem = [];
-        var val = document.getElementsByClassName("myText")[0].value;
+        //var val = document.getElementsByClassName("myText")[0].value;
         barem.push(document.getElementsByClassName("barem"));
 
         barem.forEach(function(item, index){
@@ -124,15 +133,19 @@ class Home extends Component{
             var minimumQuantity = barem[index][index].getAttribute("data-minimumQuantity");
             var maximumQuantity = barem[index][index].getAttribute("data-maximumQuantity");
 
-            if( val >= minimumQuantity && val <= maximumQuantity )
-                document.getElementsByClassName("barem")[index].classList.add('baremChange');
+            if( e.target.value >= minimumQuantity && e.target.value <= maximumQuantity )
+                barem[index][index].classList.add('baremChange');
             else
-                document.getElementsByClassName("barem")[index].classList.remove('baremChange');
+                barem[index][index].classList.remove('baremChange');
 
         });
     }
 
-
+    changeImage (e){
+        let bigImages = document.getElementById("bigImages");
+        bigImages.src= e.target.src
+    }
+    
     baremPrice(e){
         const dataprice = e.target.getAttribute("data-price");
 
@@ -182,13 +195,13 @@ class Home extends Component{
                 <Header/>
                 <div className="product">
                     <div className="product-image">
-                        <img className="bigImages" src={data.productVariants[0].images.slice(0,1)}/>
+                        <img className="bigImages" id="bigImages" src={data.productVariants[0].images.slice(0,1)}/>
                         <div className="images">
                             {
                                 data.productVariants.map((attr) => {
                                     return (
                                         <div className="smallImages">
-                                            <img className="sImages" src={attr.images[0]}/>
+                                            <img onClick={this.changeImage}  className="sImages" src={attr.images[0]}/>
                                         </div>
                                     );
                                 })
