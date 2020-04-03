@@ -25,27 +25,22 @@ class Home extends Component{
             sizeFilter : '',
             filtered : null
         }
-        this.changeFilter = this.changeFilter.bind(this);
+        this.changeFilterColor = this.changeFilterColor.bind(this);
         this.changeSize = this.changeSize.bind(this);
         this.baremChange = this.baremChange.bind(this);
         this.baremPrice = this.baremPrice.bind(this);
         this.filterAll = this.filterAll.bind(this);
     }
 
-    changeFilter(e){
+    changeFilterColor(e){
         this.state.filtered = null;
-//color
         const sizeName = e.target.getAttribute("data-name");
         const inputs = document.querySelectorAll(".sizeInput");
 
         //color her change oldugunda size checked sifirlanmali
-        for (var i = 0; i < inputs.length; i++) {
-            inputs[i].checked = false;
-        }
+        for (var i = 0; i < inputs.length; i++) { inputs[i].checked = false; }
 
-        for (var i = 0; i < inputs.length; i++) {
-            inputs[i].setAttribute("disabled",true);
-        }
+        for (var a = 0; a < inputs.length; a++) { inputs[a].setAttribute("disabled",true); }
 
         const newProductArry = productData.productVariants.filter((item) => {
             return item.attributes[1].value === sizeName
@@ -54,14 +49,13 @@ class Home extends Component{
         var first = true;
         newProductArry.map((item) => {
             for (var i = 0; i < inputs.length; i++) {
-                if(item.attributes[0].value === inputs[i].value) {
+                if(item.attributes[0].value === inputs[i].value)
+                    //renk secildiginde beden icin ilkini checked
                     if(first)
                         inputs[i].checked = true;
-
                     first = false;
                     inputs[i].removeAttribute("disabled");
                     inputs[i].setAttribute("data-id", item.id);
-                }
             }
         });
 
@@ -84,51 +78,34 @@ class Home extends Component{
     }
 
 
-    filterAll(e){
+    filterAll(){
         this.state.imagesList = [];
         if(this.state.filtered == null)
-        {
             this.state.filtered = productData.productVariants.filter((item) => {
                 return item.attributes[1].value === this.state.colorFilter
             });
-        }
 
         var newSizeArry = [];
         if(this.state.sizeFilter==null)
-        {
             newSizeArry = [  this.state.filtered[0] ];
-        }
-        else{
-            // console.log(this.state.imagesList);
+        else
             newSizeArry = this.state.filtered.filter((item) => {
-                //console.log('newProductArry' + item.attributes[0].value);
-
                 return item.attributes[0].value === this.state.sizeFilter
             });
-        }
-
 
         newSizeArry.map((item) => {
-            console.log('--' + item.images);
-
             this.state.imagesList.push(item.images);
         });
 
-        if(this.state.imagesList != null){
+        if(this.state.imagesList != null)
             this.state.imagesList.map((itemImg) => {
                 Array.from(itemImg).map((sizeObj, index) => {
                     document.getElementsByClassName("sImages")[index].src = "";
                     document.getElementsByClassName("sImages")[index].src = sizeObj;
-                    //console.log('1' + sizeObj);
-
                     document.getElementsByClassName("bigImages")[0].src = "";
                     document.getElementsByClassName("bigImages")[0].src = sizeObj;
-
                 });
-
             })
-        }
-
     }
 
 
@@ -224,7 +201,7 @@ class Home extends Component{
                                                                type="radio"
                                                         />
                                                         {item.name == "Renk" ?
-                                                            <label for="html" className="color" data-name={itemRadio}  onClick={ this.changeFilter } htmlFor={itemRadio+i}>
+                                                            <label for="html" className="color" data-name={itemRadio}  onClick={ this.changeFilterColor } htmlFor={itemRadio+i}>
                                                                 {itemRadio}
                                                             </label>
                                                             :
