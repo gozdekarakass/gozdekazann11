@@ -48,15 +48,6 @@ const browserConfig = {
         query: { presets: ["react-app"] }
       },
       {
-        test: /\.font\.js/,
-        use: [
-          'only-web-loader',
-          MiniCssExtractPlugin.loader,
-          'css-loader',
-          'webfonts-loader'
-        ]
-      },
-      {
         loader: "url-loader",
         test: /\.(svg|eot|ttf|woff|woff2)?$/
       }
