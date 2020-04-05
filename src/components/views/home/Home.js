@@ -35,10 +35,8 @@ class Home extends Component{
             totalPrice: this.state.baremValue,
         });
 
-        var barem = [];
-        var baremChange = [];
-
-        //inputtan deger girerken barem araligi bulmadan once secilen aralik sifirlanmali
+        let baremChange = [];
+        //inputtan deger girerken barem araligi bulmadan once secilen aralik sifirla
         if(document.getElementsByClassName("baremChange").length > 0){
             baremChange.push(document.getElementsByClassName("baremChange"));
             baremChange.map((itm, ind) => {
@@ -46,25 +44,36 @@ class Home extends Component{
             });
         }
 
-        //inputtan giren degere gore barem araligini bulan alan
-        barem.push(document.getElementsByClassName("barem"));
-        barem.map((item, index) => {
-            var minimumQuantity = item[index].getAttribute("data-minimumquantity");
-            var maximumQuantity = item[index].getAttribute("data-maximumquantity");
+        for (var i = 0; i < document.getElementsByClassName("barem").length; i++) {
 
-            if( e.target.value >= minimumQuantity && e.target.value <= maximumQuantity )
-                item[index].classList.add('baremChange');
-            else
-                item[index].classList.remove('baremChange');
-        });
+            let minimumQuantity = document.getElementsByClassName("barem")[i].getAttribute("data-minimumquantity");
+            let maximumQuantity = document.getElementsByClassName("barem")[i].getAttribute("data-maximumquantity");
+            let getPrice = document.getElementsByClassName("barem")[i];
 
+            if( e.target.value >= minimumQuantity && e.target.value <= BigInt(maximumQuantity) ){
+                document.getElementsByClassName("barem")[i].classList.add('baremChange');
+
+                //barem araligi girdiginde select ederken toplam fiyat da hesapla
+                this.setState((prevState) => {
+                    return {
+                        baremPriceValue: getPrice.getAttribute("data-price"),
+                        selectedBarem : !prevState.selectedBarem
+                    }
+                });
+                let a = document.getElementsByClassName('barem');
+                for (let i = 0; i < a.length; i++) { a[i].classList.remove('baremChange') }
+                getPrice.classList.add('baremChange');
+                this.basketBtnVisible(this.state.c = true);
+            }
+            else{
+                document.getElementsByClassName("barem")[i].classList.remove('baremChange');
+
+            }
+        }
         this.basketBtnVisible(this.state.d = true);
     }
 
     baremPrice(e){
-
-        if(e.target.getAttribute("class") === "baremChange")
-            document.getElementsByClassName("barem")[1].classList.remove('baremChange');
 
         const dataprice = e.target.getAttribute("data-price");
 
