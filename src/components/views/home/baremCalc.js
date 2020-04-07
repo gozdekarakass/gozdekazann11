@@ -18,8 +18,6 @@ class BaremCalc extends Component{
     //barem araligi input
     baremChange(e){
 
-        console.log(e.target.value)
-
         this.setState({
             baremValue: e.target.value,
             totalPrice: this.state.baremValue,
@@ -60,9 +58,6 @@ class BaremCalc extends Component{
             }
             else{
                 document.getElementsByClassName("barem")[i].classList.remove('baremChange');
-                delete this.props.btnControl.baremSelectStatus;
-                this.props.basketBtnVisible();
-
             }
         }
     }
