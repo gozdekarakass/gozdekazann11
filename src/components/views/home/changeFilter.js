@@ -98,10 +98,11 @@ class ChangeFilter extends Component{
                 Array.from(itemImg.images).map((sizeObj, index) => {
                     document.getElementsByClassName("sImages")[index].src = "";
                     document.getElementsByClassName("sImages")[index].src = sizeObj;
-                    document.getElementsByClassName("bigImages")[0].src = "";
-                    document.getElementsByClassName("bigImages")[0].src = sizeObj;
                 });
             })
+
+        document.getElementsByClassName("bigImages")[0].src = "";
+        document.getElementsByClassName("bigImages")[0].src = document.getElementsByClassName("sImages")[0].src;
     }
 
     render(){

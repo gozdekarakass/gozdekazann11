@@ -45,6 +45,11 @@ class Home extends Component{
         console.log('toplam fiyat : ' + this.state.totalPrice * this.state.baremPriceValue );
     }
 
+    componentDidMount(){
+        document.getElementsByClassName("bigImages")[0].src = "";
+        document.getElementsByClassName("bigImages")[0].src = document.getElementsByClassName("sImages")[2].src;
+    }
+
     render(){
         const { data, btnControl } = this.state;
         return(

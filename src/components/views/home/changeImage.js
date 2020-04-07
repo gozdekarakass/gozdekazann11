@@ -20,7 +20,7 @@ class ChangeImage extends Component{
         return(
             <div>
                 <div className="product-image">
-                    <img className="bigImages" id="bigImages" src={ data.productVariants[0].images.slice(0,1) }/>
+                    <img className="bigImages" src=""/>
                     <div className="images">
                         {
                             data.productVariants.map((attr) => {
