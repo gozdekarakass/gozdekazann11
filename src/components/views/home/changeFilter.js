@@ -11,18 +11,16 @@ class ChangeFilter extends Component{
             newSizeArry: [],
             colorFilter : '',
             sizeFilter : '',
-            filtered : null,
-            a : false,
-            b : false,
-            c : false,
-            d : false,
+            filtered : null
         }
         this.changeFilterColor = this.changeFilterColor.bind(this);
         this.changeSize = this.changeSize.bind(this);
         this.filterAll = this.filterAll.bind(this);
     }
 
+    //color change
     changeFilterColor(e){
+
         this.state.filtered = null;
         const sizeName = e.target.getAttribute("data-name");
         const inputs = document.querySelectorAll(".sizeInput");
@@ -53,7 +51,11 @@ class ChangeFilter extends Component{
         this.state.sizeFilter = null;
         this.state.filtered = newProductArry;
         this.filterAll();
-        this.props.basketBtnVisible(this.state.a = true);
+
+        //her renk degistiginde
+        delete this.props.btnControl.sizeStatus;
+        this.props.btnControl.colorStatus = true;
+        this.props.basketBtnVisible()
     }
 
     changeSize(e){
@@ -61,11 +63,12 @@ class ChangeFilter extends Component{
         const size = e.target.getAttribute("data-name");
 
         if(!e.target.checked){
-            this.props.basketBtnVisible(this.state.b = true);
             this.state.sizeFilter = size;
+            //her size degistiginde button kontrol
+            this.props.btnControl.sizeStatus = true;
+            this.props.basketBtnVisible();
         }
         else{
-            this.props.basketBtnVisible(this.state.b = false);
             this.state.sizeFilter = null;
         }
         this.filterAll();
