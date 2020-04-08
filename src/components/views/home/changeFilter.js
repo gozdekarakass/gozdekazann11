@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 
 class ChangeFilter extends Component{
-
     constructor(props) {
         super(props);
         this.state = {
@@ -12,7 +11,7 @@ class ChangeFilter extends Component{
             colorFilter : '',
             sizeFilter : '',
             filtered : null
-        }
+        };
         this.changeFilterColor = this.changeFilterColor.bind(this);
         this.changeSize = this.changeSize.bind(this);
         this.filterAll = this.filterAll.bind(this);
@@ -20,7 +19,6 @@ class ChangeFilter extends Component{
 
     //color change
     changeFilterColor(e){
-
         this.state.filtered = null;
         const sizeName = e.target.getAttribute("data-name");
         const inputs = document.querySelectorAll(".sizeInput");
@@ -99,8 +97,7 @@ class ChangeFilter extends Component{
                     document.getElementsByClassName("sImages")[index].src = "";
                     document.getElementsByClassName("sImages")[index].src = sizeObj;
                 });
-            })
-
+            });
         document.getElementsByClassName("bigImages")[0].src = "";
         document.getElementsByClassName("bigImages")[0].src = document.getElementsByClassName("sImages")[0].src;
     }

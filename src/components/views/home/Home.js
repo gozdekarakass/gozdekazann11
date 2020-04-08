@@ -8,33 +8,22 @@ import ChangeImage from './changeImage.js';
 import BaremCal from './baremCalc.js';
 
 class Home extends Component{
-
     constructor(props) {
         super(props);
         this.state = {
             data: productData,
             buttonStatus : false,
             btnControl : {}
-
-        }
+        };
         this.addBasket = this.addBasket.bind(this);
         this.basketBtnVisible = this.basketBtnVisible.bind(this);
-
     }
 
     basketBtnVisible() {
-        console.log(this.state.btnControl);
-
-        if (
-            this.state.btnControl.colorStatus && this.state.btnControl.sizeStatus
-            && this.state.btnControl.inputBaremStatus && this.state.btnControl.baremSelectStatus
-        )
+        if (this.state.btnControl.colorStatus && this.state.btnControl.sizeStatus && this.state.btnControl.inputBaremStatus && this.state.btnControl.baremSelectStatus)
             this.setState({ buttonStatus : true})
         else
             this.setState({ buttonStatus : false})
-
-        //console.log(delete this.state.btnControl.colorStatus);
-
     }
 
 
@@ -68,7 +57,6 @@ class Home extends Component{
                             btnControl={btnControl}
                             basketBtnVisible={this.basketBtnVisible}
                         />
-
                         <div className="basketDiv">
                             <input onClick={ this.addBasket }
                                    id="basketBtn"
@@ -77,7 +65,6 @@ class Home extends Component{
                                    value="SEPETE EKLE"
                                    disabled={ this.state.buttonStatus ? '' : 'disabled'}/>
                         </div>
-
                     </div>
                 </div>
             </div>

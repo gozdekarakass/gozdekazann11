@@ -17,10 +17,9 @@ class BaremCalc extends Component{
 
     //barem araligi input
     baremChange(e){
-
         this.setState({
             baremValue: e.target.value,
-            totalPrice: this.state.baremValue,
+            totalPrice: this.state.baremValue
         });
 
         let baremChange = [];
@@ -39,7 +38,10 @@ class BaremCalc extends Component{
             let getPrice = document.getElementsByClassName("barem")[i];
 
             if( e.target.value >= minimumQuantity && e.target.value <= BigInt(maximumQuantity) ){
+
                 document.getElementsByClassName("barem")[i].classList.add('baremChange');
+
+                this.props.btnControl.inputBaremStatus = true;
                 this.props.btnControl.baremSelectStatus = true;
                 this.props.basketBtnVisible();
 
@@ -54,9 +56,15 @@ class BaremCalc extends Component{
                 for (let i = 0; i < a.length; i++) {
                     a[i].classList.remove('baremChange');
                     getPrice.classList.add('baremChange');
+
+                    this.props.btnControl.inputBaremStatus = true;
+                    this.props.btnControl.baremSelectStatus = true;
+                    this.props.basketBtnVisible();
                 }
             }
             else{
+                delete this.props.btnControl.inputBaremStatus;
+                delete this.props.btnControl.baremSelectStatus;
                 document.getElementsByClassName("barem")[i].classList.remove('baremChange');
             }
         }
@@ -64,9 +72,7 @@ class BaremCalc extends Component{
 
     //barem araligi select
     baremPrice(e){
-
         const dataprice = e.target.getAttribute("data-price");
-
         this.setState((prevState) => {
             return {
                 baremPriceValue: dataprice,
@@ -78,12 +84,11 @@ class BaremCalc extends Component{
         for (let i = 0; i < a.length; i++) {
             a[i].classList.remove('baremChange')
         }
+        
         e.target.classList.add('baremChange');
-
-        this.props.btnControl.inputBaremStatus = true;
+        this.props.btnControl.baremSelectStatus = true;
         this.props.basketBtnVisible();
     }
-
 
     render(){
         const { data } = this.state;
@@ -110,7 +115,6 @@ class BaremCalc extends Component{
                         }
                     </div>
                 </div>
-
                 <div className="clearfix"></div>
                 <div className="piece">
                     Adet
@@ -119,7 +123,6 @@ class BaremCalc extends Component{
                            value={this.state.baremValue}
                            onChange={ this.baremChange}/> Adet
                 </div>
-
                 <div className="totalPrice">
                     <h5>TOPLAM : { Number.parseFloat( this.state.totalPrice * this.state.baremPriceValue).toFixed(1) } TL</h5>
                 </div>
