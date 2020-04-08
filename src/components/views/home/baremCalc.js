@@ -7,18 +7,20 @@ class BaremCalc extends Component{
         this.state = {
             data: this.props.data,
             totalPrice : '',
-            baremValue: '',
+            baremValue: 0,
             baremPriceValue: '',
             selectedBarem : ''
         }
         this.baremChange = this.baremChange.bind(this);
         this.baremPrice = this.baremPrice.bind(this);
+        this.increaseValue = this.increaseValue.bind(this);
+        this.decreaseValue = this.decreaseValue.bind(this);
     }
 
     //barem araligi input
-    baremChange(e){
+    baremChange(value){
         this.setState({
-            baremValue: e.target.value,
+            baremValue: value,
             totalPrice: this.state.baremValue
         });
 
@@ -32,39 +34,15 @@ class BaremCalc extends Component{
         }
 
         for (var i = 0; i < document.getElementsByClassName("barem").length; i++) {
-
             let minimumQuantity = document.getElementsByClassName("barem")[i].getAttribute("data-minimumquantity");
             let maximumQuantity = document.getElementsByClassName("barem")[i].getAttribute("data-maximumquantity");
-            let getPrice = document.getElementsByClassName("barem")[i];
-
-            if( e.target.value >= minimumQuantity && e.target.value <= BigInt(maximumQuantity) ){
-
+            if( value >= minimumQuantity && value <= BigInt(maximumQuantity) ){
                 document.getElementsByClassName("barem")[i].classList.add('baremChange');
-
                 this.props.btnControl.inputBaremStatus = true;
                 this.props.btnControl.baremSelectStatus = true;
                 this.props.basketBtnVisible();
-
-                //barem araligi girdiginde select ederken toplam fiyat da hesapla
-                this.setState((prevState) => {
-                    return {
-                        baremPriceValue: getPrice.getAttribute("data-price"),
-                        selectedBarem : !prevState.selectedBarem
-                    }
-                });
-                let a = document.getElementsByClassName('barem');
-                for (let i = 0; i < a.length; i++) {
-                    a[i].classList.remove('baremChange');
-                    getPrice.classList.add('baremChange');
-
-                    this.props.btnControl.inputBaremStatus = true;
-                    this.props.btnControl.baremSelectStatus = true;
-                    this.props.basketBtnVisible();
-                }
             }
             else{
-                delete this.props.btnControl.inputBaremStatus;
-                delete this.props.btnControl.baremSelectStatus;
                 document.getElementsByClassName("barem")[i].classList.remove('baremChange');
             }
         }
@@ -72,22 +50,76 @@ class BaremCalc extends Component{
 
     //barem araligi select
     baremPrice(e){
-        const dataprice = e.target.getAttribute("data-price");
-        this.setState((prevState) => {
-            return {
-                baremPriceValue: dataprice,
-                selectedBarem : !prevState.selectedBarem
-            }
-        });
+        document.getElementById('number').value =  e.target.getAttribute("data-minimumquantity");
+        document.getElementById('total').textContent = e.target.getAttribute("data-minimumquantity") * e.target.getAttribute("data-price");
+
+        this.props.btnControl.inputBaremStatus = true;
+        this.props.btnControl.baremSelectStatus = true;
+        this.props.basketBtnVisible();
 
         let a = document.getElementsByClassName('barem');
         for (let i = 0; i < a.length; i++) {
             a[i].classList.remove('baremChange')
         }
-        
+
         e.target.classList.add('baremChange');
         this.props.btnControl.baremSelectStatus = true;
         this.props.basketBtnVisible();
+    }
+
+    increaseValue() {
+        var value = parseInt(document.getElementById('number').value, 10);
+        value = isNaN(value) ? 0 : value;
+        value++;
+        document.getElementById('number').value = value;
+
+        var mq = document.getElementsByClassName("barem")[0].getAttribute("data-minimumquantity");
+
+        if(value < mq){
+            delete this.props.btnControl.inputBaremStatus;
+            delete this.props.btnControl.baremSelectStatus;
+            this.props.basketBtnVisible();
+            document.getElementsByClassName("baremError")[0].style.display = 'block';
+        }else {
+            this.baremChange(value);
+            document.getElementsByClassName("baremError")[0].style.display = 'none';
+        }
+
+        var mqchange = document.getElementsByClassName("baremChange")[0].getAttribute("data-minimumquantity");
+        this.setState({
+            baremPriceValue: value,
+            totalPrice: mqchange
+        });
+    }
+
+     decreaseValue() {
+        var value = parseInt(document.getElementById('number').value, 10);
+        value = isNaN(value) ? 0 : value;
+        value < 1 ? value = 1 : '';
+        value--;
+        document.getElementById('number').value = value;
+
+         var mq = document.getElementsByClassName("barem")[0].getAttribute("data-minimumquantity");
+
+         if(value < mq){
+
+             delete this.props.btnControl.inputBaremStatus;
+             delete this.props.btnControl.baremSelectStatus;
+             this.props.basketBtnVisible();
+             document.getElementsByClassName("baremError")[0].style.display = 'block';
+             document.getElementsByClassName("barem")[0].classList.remove('baremChange');
+         }else {
+
+             this.baremChange(value);
+             document.getElementsByClassName("barem")[0].classList.add('baremChange');
+             document.getElementsByClassName("baremError")[0].style.display = 'none';
+         }
+
+         var mqchange = document.getElementsByClassName("baremChange")[0].getAttribute("data-minimumquantity");
+         this.setState({
+             baremPriceValue: value,
+             totalPrice: mqchange
+         });
     }
 
     render(){
@@ -116,15 +148,16 @@ class BaremCalc extends Component{
                     </div>
                 </div>
                 <div className="clearfix"></div>
+                <div class="baremError">Girilen adet barem aralığında değil.</div>
                 <div className="piece">
                     Adet
-                    <input className="myText"
-                           placeholder="100"
-                           value={this.state.baremValue}
-                           onChange={ this.baremChange}/> Adet
+                    <div class="value-button" id="decrease" onClick={ this.decreaseValue } value="Decrease Value">-</div>
+                    <input type="number" id="number" value={this.state.baremValue} />
+                    <div class="value-button" id="increase" onClick={ this.increaseValue } value="Increase Value">+</div>
                 </div>
+
                 <div className="totalPrice">
-                    <h5>TOPLAM : { Number.parseFloat( this.state.totalPrice * this.state.baremPriceValue).toFixed(1) } TL</h5>
+                    <h5>TOPLAM : <span id="total">{ Number.parseFloat( this.state.totalPrice * this.state.baremPriceValue).toFixed(1) }</span> TL</h5>
                 </div>
             </div>
         );

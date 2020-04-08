@@ -39,6 +39,12 @@
         margin-left: 20px;
       }
     }
+    .baremError{
+      color: $colorRed;
+      margin-top: 20px;
+      font-size: 11px;
+      display: none;
+    }
     .totalPrice{
       margin-top: 20px;
     }
@@ -51,9 +57,9 @@
         margin-top: 20px;
         cursor: pointer;
 
-      &:disabled {
-        background: $colorInputBorderActiveKit;
       }
+      .disabled {
+        background: $colorInputBorderActiveKit;
       }
     }
   }
@@ -150,4 +156,48 @@
     box-shadow: none;
     background: #ddd;
   }
+}
+
+.value-button {
+  display: inline-block;
+  margin: 0px;
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  vertical-align: middle;
+  padding: 11px 0;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.value-button:hover {
+  cursor: pointer;
+}
+
+ #decrease {
+  margin-right: -4px;
+  border-radius: 8px 0 0 8px;
+}
+
+ #increase {
+  margin-left: -4px;
+  border-radius: 0 8px 8px 0;
+}
+
+input#number {
+  text-align: center;
+  border: 1px solid #ddd;
+  margin: 0px;
+  width: 40px;
+  height: 40px;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }

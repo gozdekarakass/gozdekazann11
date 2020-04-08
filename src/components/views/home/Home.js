@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import './home.scss';
 import {Header} from '../header/header';
+import { Button } from 'reactstrap';
 import productData from '../../../data/productdata.json';
 
 import ChangeFilter from './changeFilter.js';
@@ -12,7 +13,6 @@ class Home extends Component{
         super(props);
         this.state = {
             data: productData,
-            buttonStatus : false,
             btnControl : {}
         };
         this.addBasket = this.addBasket.bind(this);
@@ -21,22 +21,24 @@ class Home extends Component{
 
     basketBtnVisible() {
         if (this.state.btnControl.colorStatus && this.state.btnControl.sizeStatus && this.state.btnControl.inputBaremStatus && this.state.btnControl.baremSelectStatus)
-            this.setState({ buttonStatus : true})
+            document.getElementsByClassName("basketBtn")[0].classList.remove('disabled');
         else
-            this.setState({ buttonStatus : false})
+            document.getElementsByClassName("basketBtn")[0].classList.add('disabled');
     }
-
 
     addBasket(){
         // seçili olan attribute’un id sini ve seçili baremi console’a basabilirsin
-        console.log('secili ID : ' + document.querySelector('.sizeInput:checked').getAttribute('data-id'));
+        console.log('secili ID : ' +  document.querySelector('.sizeInput:checked').getAttribute('data-id'));
         console.log('secili barem : ' + document.getElementsByClassName('baremChange')[0].getAttribute('data-price'));
-        console.log('toplam fiyat : ' + this.state.totalPrice * this.state.baremPriceValue );
+        console.log('toplam fiyat : ' + document.getElementById('total').textContent);
     }
 
     componentDidMount(){
         document.getElementsByClassName("bigImages")[0].src = "";
         document.getElementsByClassName("bigImages")[0].src = document.getElementsByClassName("sImages")[2].src;
+
+        document.getElementById('number').value = document.getElementsByClassName("barem")[0].getAttribute("data-minimumquantity");
+        document.getElementsByClassName("barem")[0].classList.add("baremChange");
     }
 
     render(){
@@ -58,12 +60,9 @@ class Home extends Component{
                             basketBtnVisible={this.basketBtnVisible}
                         />
                         <div className="basketDiv">
-                            <input onClick={ this.addBasket }
-                                   id="basketBtn"
-                                   type="button"
-                                   className="basketBtn"
-                                   value="SEPETE EKLE"
-                                   disabled={ this.state.buttonStatus ? '' : 'disabled'}/>
+                            <Button className="basketBtn disabled" onClick={() => this.addBasket()}  >
+                                SEPETE EKLE
+                            </Button>
                         </div>
                     </div>
                 </div>

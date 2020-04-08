@@ -1,56 +1,7 @@
 //defaults
 
-$colorWhite:        #fff;
-$colorBlack:        #000;
-$colorAction:      	#2392d8;
-$colorGreen:		#40af22;
-$colorOrange:		#ff9c00;
-$colorEtsRed:		#e30513;
-$colorRed:          #fe1112;
-$colorGray:         #3E3E3E;
-$colorLightGray:    #D0CACA;
-$colorDisabled:     #777777;
-$bonusGreen:        #fb9600;
-
-$colorGreenKit:      #3CB260;
-$colorOrangeKit:     #F5A623;
-$colorBlueKit:       #319BF5;
-$colorRedKit:        #EF494F;
-$backgroundColorKit: #F6F8FB;
-$borderColorLightKit:#E7E7E7;
-$borderColorDarkKit: #D4D5D7;
-$borderColorBlueKit: #c1e1fc;
-$textColorLightKit:  #A5A5A5;
-$textColorNormalKit: #747474;
 $textColorDarkKit:   #4A4A4A;
-$iconColor:          #A5A5A5;
-
-//scaffolding
-$textColor:         $colorBlack;
-$grayTextColor:     $colorGray;
-$linkColor:			$colorAction;
-$buttonColor:		$colorAction;
-$priceColor:		$colorOrange;
-$discountColor:		$colorGreen;
-$worldcardColor:    #782B90;
-$eventColor:        #cf35b4;
-$bodyBgColor:		#FFF;
-$bodyGrayBgColor:	#f7f7f7;
-$warningColor:      $colorRed;
-$scoreColor:        #7bb868;
-$borderLightGray:   #D6D6D6;
-
-
-
-//forms
-$colorInputBorder:			#BBB;
-$colorInputBorderHover:		darken($colorInputBorder,10%);
-$colorInputBorderActive:	darken($colorInputBorder,30%);
-
-
-$colorInputBorderKit:			#d4d5d7;
-$colorInputBorderActiveKit:	    #a5a5a5;
-
-//borders
-$borderColor: 		#e7e7e7;
-$borderRadius: 		2px;
+$colorRed:          #fe1112;
+$colorOrangeKit:     #F5A623;
+$colorWhite:        #fff;
+$colorInputBorderActiveKit: #a5a5a5;
