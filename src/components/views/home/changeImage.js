@@ -19,7 +19,7 @@ class ChangeImage extends Component{
         return(
             <div>
                 <div className="product-image">
-                    <img className="bigImages" src=""/>
+                    <img id="bigImages" className="bigImages" src=""/>
                     <div className="images">
                         {
                             data.productVariants.map((attr) => {
