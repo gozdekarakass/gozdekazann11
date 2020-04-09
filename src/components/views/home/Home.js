@@ -33,14 +33,6 @@ class Home extends Component{
         console.log('toplam fiyat : ' + document.getElementById('total').textContent);
     }
 
-    componentDidMount(){
-        document.getElementsByClassName("bigImages")[0].src = "";
-        document.getElementsByClassName("bigImages")[0].src = document.getElementsByClassName("sImages")[2].src;
-
-        document.getElementById('number').value = document.getElementsByClassName("barem")[0].getAttribute("data-minimumquantity");
-        document.getElementsByClassName("barem")[0].classList.add("baremChange");
-    }
-
     render(){
         const { data, btnControl } = this.state;
         return(
