@@ -30,10 +30,10 @@ class ChangeImage extends Component{
                     <img id="bigImages" className="bigImages" src=""/>
                     <div className="images">
                         {
-                            data.productVariants.map((attr) => {
+                            data.productVariants[0].images.map((attr) => {
                                 return (
                                     <div className="smallImages">
-                                        <img onClick={ this.changeImage }  className="sImages" src={ attr.images[0] }/>
+                                        <img onClick={ this.changeImage }  className="sImages" src={ attr }/>
                                     </div>
                                 );
                             })
