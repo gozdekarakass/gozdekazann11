@@ -48,6 +48,7 @@ class ChangeFilter extends Component{
         this.state.colorFilter = sizeName;
         this.state.sizeFilter = null;
         this.state.filtered = newProductArry;
+        console.log(this.state.filtered)
         this.filterAll();
 
         //her renk degistiginde
@@ -57,10 +58,11 @@ class ChangeFilter extends Component{
     }
 
     changeSize(e){
-        this.state.filtered = null;
+        //this.state.filtered = null;
         const size = e.target.getAttribute("data-name");
 
         if(!e.target.checked){
+            console.log(size);
             this.state.sizeFilter = size;
             //her size degistiginde button kontrol
             this.props.btnControl.sizeStatus = true;

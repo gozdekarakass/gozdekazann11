@@ -54,9 +54,7 @@ class BaremCalc extends Component{
         document.getElementById('total').textContent = e.target.getAttribute("data-minimumquantity") * e.target.getAttribute("data-price");
 
         this.props.btnControl.inputBaremStatus = true;
-        this.props.btnControl.baremSelectStatus = true;
-        this.props.basketBtnVisible();
-
+        
         let a = document.getElementsByClassName('barem');
         for (let i = 0; i < a.length; i++) {
             a[i].classList.remove('baremChange')
